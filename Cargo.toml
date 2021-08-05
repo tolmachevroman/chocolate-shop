@@ -1,0 +1,19 @@
+[package]
+name="chocolate-shop"
+description="GraphQL backend for an imaginary chocolate shop"
+version="0.1.0"
+authors=["Roman Tolmachev<tolmachevroman@gmail.com>"]
+edition="2018"
+
+[dependencies]
+anyhow = "1.0.40"
+async-trait = "0.1.50"
+async-graphql = { path = "../async-graphql" }
+async-graphql-rocket = { path = "../async-graphql/integrations/rocket" }
+deadpool = "0.8.0"
+dotenv = "0.15.0"
+rocket = { version = "0.5.0-rc.1", default-features = false }
+serde = "1.0.126"
+sqlx = { version = "0.5.5", features = [ "runtime-tokio-rustls", "postgres", "macros" ] }
+strum = "0.21.0"
+strum_macros = "0.21.0"
