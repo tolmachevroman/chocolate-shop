@@ -22,21 +22,8 @@ Besides cloning this repo, you will also need to clone [async-graphql](https://g
 
 ## Seeding your database with migrations
 
-    Migration tables have been created to seed the `starwars` schema in your database.
+TODO explain https://github.com/launchbadge/sqlx/tree/master/sqlx-cli
 
-1.  To use the migration scripts, install the `golang-migrate` CLI.
-
-    Go [here](https://github.com/golang-migrate/migrate) and follow instructions to install the CLI.
-
-2.  After installation, set this up for `golang-migrate`:
-
-    ```export POSTGRESQL_URL='postgres://postgres:<YOUR_PWD>@localhost:5432/starwars?sslmode=disable'```
-
-3.  When you are ready to run the migration, run this from the project's root directory:
-
-    ```migrate -source file://./src/db/migrations -database postgres://postgres:<YOUR_PWD>@localhost:5432/starwars?sslmode=disable up```
-
-    *Note: If you run into migration quirks, read the documentation at [golang-migrate](https://github.com/golang-migrate/migrate)*
 
 
 ## Running the service
@@ -47,19 +34,4 @@ The current configuration in `Rocket.toml` has been setup to run the micro-servi
 http://localhost:7600/
 ```
 
-### Extending the database
-
-    This section can be skipped if you are not interested in extending the database.
-
-1.  If you want to extend the tables, you can create new migration scripts,
-
-```migrate create -ext sql -dir src/db/migrations -seq <MIGRATION_FILE_NAME>```
-
-2.  If you want to update the scripts only, you will have to do a `down`, followed by an `up`
-
-    ```migrate -source file://./src/db/migrations -database postgres://postgres:<YOUR_PWD>@localhost:5432/starwars?sslmode=disable down```
-
-    ```migrate -source file://./src/db/migrations -database postgres://postgres:<YOUR_PWD>@localhost:5432/starwars?sslmode=disable up```
-
-    *Note: If you encounter errors in your scripts, you will need to truncate the `scheme_migrations` table, and drop the `starwars` schema.*
 
