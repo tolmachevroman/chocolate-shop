@@ -10,17 +10,17 @@ GraphQL schema is quite simple:
 
 ```rust
 enum ChocolateType {
-	Bitter, White, Milk
+    Bitter, White, Milk
 }
 
 type Product {
-	id: Int!
-	name: String!
+    id: Int!
+    name: String!
     description: String!
-	price: Int!
-	chocolateType: ChocolateType!
-	fillings: [String]
-	images: [String]!
+    price: Int!
+    chocolateType: ChocolateType!
+    fillings: [String]
+    images: [String]!
 }
 ```
 
