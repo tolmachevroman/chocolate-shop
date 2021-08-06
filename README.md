@@ -1,29 +1,34 @@
-# sputnik
+# chocolate-shop
 
-This repo demonstrates how to setup a Rust micro-service using Rocket, async-graphql, and sqlx. For some background on this, go [here]().
+GraphQL backend for an imaginary chocolate shop implemented in Rust, `rocket`, `async-graphql` and `sqlx`. For detailed installation guide please refer to the [bootstrap project](https://github.com/lionkeng/sputnik). The only difference I used SQLx CLI to manage migrations.
 
-*Note: This repo assumes you have some familiarity with Rust, graphQL, and SQL.*
-# Installation Steps
-## Cloning related repo
+# Project-specific implementation details
 
-Besides cloning this repo, you will also need to clone [async-graphql](https://github.com/async-graphql/async-graphql). The reason you need to do that is because the Rocket support for async-graphql is currently unpublished. Make the necessary changes to `Cargo.toml` to update the path information to `async-graphql` and `async-graphql-rocket`.
-## Database Setup
+## Schema
 
-1.  This project assumes that you have `postgres` installed locally. At this point, you will need to create a `starwars` database.
+GraphQL schema is quite simple:
 
-    ```psql -h localhost -U postgres -w -c "create database starwars;"```
+```
+enum ChocolateType {
+	Bitter, White, Milk
+}
 
+type Product {
+	id: Int!
+	name: String!
+    description: String!
+	price: Int!
+	chocolateType: ChocolateType!
+	fillings: [String]
+	images: [String]!
+}
+```
 
-2.  Create a `.env` file in the project root directory and add the following line:
+[Requests](/src/models/mod.rs) include querying, updating a price of a product and deleting it.
 
-    ```DATABASE_URL="postgres://postgres:<YOUR_PWD>@localhost:5432/starwars"```
+## Using SQLx CLI to perform migrations
 
-    This environment variable is used as a configuration input to the database connection pool to indicate where to find the database
-
-## Seeding your database with migrations
-
-TODO explain https://github.com/launchbadge/sqlx/tree/master/sqlx-cli
-
+To facilitate the migrations flow please check the [SQLx CLI](https://github.com/launchbadge/sqlx/tree/master/sqlx-cli). It allows you to add and run migrations in a clean fashion. Refer to [migrations](/migrations) folder to see some examples.
 
 
 ## Running the service
