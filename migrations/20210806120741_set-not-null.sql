@@ -1,0 +1,7 @@
+-- Add migration script here
+ALTER TABLE products 
+ALTER COLUMN name SET NOT NULL,
+ALTER COLUMN description SET NOT NULL,
+ALTER COLUMN price SET NOT NULL,
+ALTER COLUMN chocolate_type SET NOT NULL,
+ALTER COLUMN images SET NOT NULL;
