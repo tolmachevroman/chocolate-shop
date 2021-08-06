@@ -18,44 +18,27 @@ pub enum ChocolateType {
 }
 
 #[derive(SimpleObject, sqlx::FromRow)]
-#[graphql(complex)]
 #[derive(Debug)]
 struct Product {
   id: i32,
   name: String,
+  description: String,
   price: i32,
   chocolate_type: ChocolateType,
   fillings: Vec<String>,
   images: Vec<String>
 }
 
-#[ComplexObject]
-impl Product {
-  // pub async fn friends(&self, ctx: &Context<'_>) -> FieldResult<Vec<Character>> {
-  //   let pool = ctx.data::<Pool>().unwrap();
-  //   let query_str = format!(
-  //     r#"SELECT id, name, kind FROM starwars.characters
-  //     JOIN starwars.friends ON starwars.friends.friend_id = id AND
-  //     starwars.friends.character_id = {}"#,
-  //     self.id
-  //   );
-  //   let result = sqlx::query_as::<_, Character>(query_str.as_str())
-  //     .fetch_all(pool.get().await.unwrap().deref_mut())
-  //     .await
-  //     .unwrap();
-  //   return Ok(result);
-  // }
-}
-
 #[Object]
 impl QueryRoot {
   async fn products(&self, ctx: &Context<'_>) -> FieldResult<Vec<Product>> {
     let pool = ctx.data::<Pool>().unwrap();
-    let query_str = format!("select id, name, price, chocolate_type, fillings, images from products");
+    let query_str = format!("select id, name, description, price, chocolate_type, fillings, images from products");
     let result = sqlx::query(query_str.as_str())
       .map(|row: PgRow| Product {
         id: row.get("id"),
         name: row.get("name"),
+        description: row.get("description"),
         price: row.get("price"),
         chocolate_type: row.get("chocolate_type"),
         fillings: row.get("fillings"),
@@ -76,14 +59,15 @@ impl MutationRoot {
         &self, 
         ctx: &Context<'_>, 
         name: String, 
+        description: String,
         price: i32, 
         chocolate_type: ChocolateType,
         fillings: Vec<String>,
         images: Vec<String>,
     ) -> ID {
         let pool = ctx.data::<Pool>().unwrap();
-        let query_str = format!("insert into products(name, price, chocolate_type, fillings, images) 
-            values ('{}', {}, '{:?}', '{:?}', '{:?}') returning id", name, price, chocolate_type, fillings, images);
+        let query_str = format!("insert into products(name, description, price, chocolate_type, fillings, images) 
+            values ('{}', {}, {}, '{:?}', '{:?}', '{:?}') returning id", name, description, price, chocolate_type, fillings, images);
         let query_str = query_str.replace("[", "{").replace("]", "}"); // handles arrays formatting
 
         let result: Result<i32, sqlx::Error> = sqlx::query(query_str.as_str())
