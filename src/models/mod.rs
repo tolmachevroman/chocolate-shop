@@ -33,7 +33,8 @@ struct Product {
 impl QueryRoot {
   async fn products(&self, ctx: &Context<'_>) -> FieldResult<Vec<Product>> {
     let pool = ctx.data::<Pool>().unwrap();
-    let query_str = format!("select id, name, description, price, chocolate_type, fillings, images from products");
+    let query_str = format!("select id, name, description, price, chocolate_type, 
+      fillings, images from products order by id");
     let result = sqlx::query(query_str.as_str())
       .map(|row: PgRow| Product {
         id: row.get("id"),
