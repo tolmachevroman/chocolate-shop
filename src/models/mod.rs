@@ -49,6 +49,26 @@ impl QueryRoot {
       .unwrap();
     return Ok(result);
   }
+
+  async fn product(&self, ctx: &Context<'_>, id: ID) -> FieldResult<Product> {
+    let pool = ctx.data::<Pool>().unwrap();
+    let query_str = format!("select id, name, description, price, chocolate_type, 
+      fillings, images from products where id = {}", String::from(id));
+    let result = sqlx::query(query_str.as_str())
+      .map(|row: PgRow| Product {
+        id: row.get("id"),
+        name: row.get("name"),
+        description: row.get("description"),
+        price: row.get("price"),
+        chocolate_type: row.get("chocolate_type"),
+        fillings: row.get("fillings"),
+        images: row.get("images"),
+      })
+      .fetch_one(pool.get().await.unwrap().deref_mut())
+      .await
+      .unwrap();
+    return Ok(result);
+  }
 }
 
 pub struct MutationRoot;
