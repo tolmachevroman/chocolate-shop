@@ -88,7 +88,7 @@ impl MutationRoot {
     ) -> ID {
         let pool = ctx.data::<Pool>().unwrap();
         let query_str = format!("insert into products(name, description, price, chocolate_type, fillings, images) 
-            values ('{}', {}, {}, '{:?}', '{:?}', '{:?}') returning id", name, description, price, chocolate_type, fillings, images);
+            values ('{}', '{}', {}, '{:?}', '{:?}', '{:?}') returning id", name, description, price, chocolate_type, fillings, images);
         let query_str = query_str.replace("[", "{").replace("]", "}"); // handles arrays formatting
 
         let result: Result<i32, sqlx::Error> = sqlx::query(query_str.as_str())
